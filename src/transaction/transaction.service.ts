@@ -9,6 +9,7 @@ export class TransactionService {
     return this.prismaService.transaction.findMany();
   }
   //getAuserTrancsaction
+
   async getUserTransaction(userId: number) {
     return this.prismaService.transaction.findMany({
       where: {
