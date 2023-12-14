@@ -10,7 +10,9 @@ import {
 import { ProductService } from './product.service';
 import { CreateProductDto, UpdateProductDto } from './dto/createProduct.dto';
 import { checkoutDto } from './dto/checkOut.dto';
-
+import { User, UserInterface } from '../user/decorator/user.decorator';
+import { Roles } from '../decorator/role.decorator';
+import { UserType } from '@prisma/client';
 @Controller('product')
 export class ProductController {
   constructor(private productService: ProductService) {}
@@ -20,9 +22,13 @@ export class ProductController {
     return this.productService.findAllProducts();
   }
   // create a new product
+  @Roles(UserType.VENDOR)
   @Post()
-  async createProduct(@Body() createProduct: CreateProductDto) {
-    return this.productService.creataProduct(createProduct);
+  async createProduct(
+    @Body() createProduct: CreateProductDto,
+    @User() user: UserInterface,
+  ) {
+    return this.productService.creataProduct(createProduct, user.id);
   }
   // singleproduct
   @Get('/:id')
@@ -30,6 +36,7 @@ export class ProductController {
     return this.productService.getSingleProduct(id);
   }
   //updateproduct
+  @Roles(UserType.VENDOR)
   @Patch('/:id')
   async updateProduct(
     @Body() updateProd: UpdateProductDto,
@@ -37,8 +44,10 @@ export class ProductController {
   ) {
     return this.productService.updateProduct(id, updateProd);
   }
+  //checkout
+  @Roles(UserType.BUYER)
   @Post('/checkout')
-  async checkout(@Body() checkoout: checkoutDto) {
-    return this.productService.checkout(checkoout);
+  async checkout(@Body() checkoout: checkoutDto, @User() user: UserInterface) {
+    return this.productService.checkout(checkoout, user.id);
   }
 }

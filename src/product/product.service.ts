@@ -10,19 +10,17 @@ export class ProductService {
     return await this.prismaService.product.findMany();
   }
   //create product
-  async creataProduct({
-    price,
-    name,
-    description,
-    quantity,
-  }: CreateProductDto) {
+  async creataProduct(
+    { price, name, description, quantity }: CreateProductDto,
+    userId: number,
+  ) {
     const product = await this.prismaService.product.create({
       data: {
         quantity,
         description,
         price,
         name,
-        vendor_id: 1,
+        vendor_id: userId,
       },
     });
     return product;
@@ -50,7 +48,7 @@ export class ProductService {
   //DELETE Product
 
   //checkout product
-  async checkout(checkoutDto: checkoutDto) {
+  async checkout(checkoutDto: checkoutDto, userId: number) {
     checkoutDto.totalAmount = checkoutDto.unitprice * checkoutDto.quantity;
 
     let transaction = await this.prismaService.transaction.create({
@@ -58,8 +56,7 @@ export class ProductService {
         unitprice: checkoutDto.unitprice,
         totalAmount: checkoutDto.totalAmount,
         quantity: checkoutDto.quantity,
-        vendor_id: 1,
-        buyer_id: 1,
+        buyer_id: userId,
         product: {
           create: checkoutDto.product,
         },

@@ -19,7 +19,6 @@ model User {
   userName String        @unique
   password String 
   userType UserType       @default(BUYER)
-  vendor   Transaction[] @relation("vendor")
   buyer    Transaction[] @relation("buyer")
   product  Product[]
 }
@@ -41,8 +40,6 @@ model Transaction {
   quantity  Int
   unitprice Int 
   totalAmount Int //formula=  quatity *price
-  vendor_id Int
-  vendor    User      @relation("vendor", fields: [vendor_id], references: [id])
   buyer_id  Int
   buyer     User      @relation("buyer", fields: [buyer_id], references: [id])
 }
