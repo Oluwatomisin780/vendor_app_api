@@ -10,11 +10,11 @@ export class TransactionController {
     return this.transactionService.getAllTransaction();
   }
 
-  @Get('/:id')
+  @Get('user/:id')
   async getUserTransaction(@Param('id', ParseIntPipe) userId: number) {
     return this.transactionService.getUserTransaction(userId);
   }
-  @Get('/:id')
+  @Get('vendor/:id')
   async getProductsWithVendorId(@Param('/:id', ParseIntPipe) id: number) {
     return this.transactionService.getProductsWithVendorId(id);
   }
