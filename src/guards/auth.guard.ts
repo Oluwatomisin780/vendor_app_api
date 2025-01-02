@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import { Reflector } from '@nestjs/core';
 import { PrismaService } from 'src/prisma/prisma.service';
 interface JwtPayload {
-  id: number;
+  id: string;
   iat: number;
   exp: number;
   name: string;

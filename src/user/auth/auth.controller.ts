@@ -3,7 +3,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { LoginIn, SignUpUser } from '../dto/user.dto';
 import { REQUEST } from '@nestjs/core';
 import { AuthService } from './auth.service';
-
+import { ApiBearerAuth } from '@nestjs/swagger';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}

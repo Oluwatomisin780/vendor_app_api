@@ -13,6 +13,9 @@ import { checkoutDto } from './dto/checkOut.dto';
 import { User, UserInterface } from '../user/decorator/user.decorator';
 import { Roles } from '../decorator/role.decorator';
 import { UserType } from '@prisma/client';
+import { ApiBearerAuth } from '@nestjs/swagger';
+
+@ApiBearerAuth()
 @Controller('product')
 export class ProductController {
   constructor(private productService: ProductService) {}
@@ -32,7 +35,7 @@ export class ProductController {
   }
   // singleproduct
   @Get('/:id')
-  async getSingleProduct(@Param('id', ParseIntPipe) id: number) {
+  async getSingleProduct(@Param('id') id: string) {
     return this.productService.getSingleProduct(id);
   }
   //updateproduct
@@ -40,7 +43,7 @@ export class ProductController {
   @Patch('/:id')
   async updateProduct(
     @Body() updateProd: UpdateProductDto,
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
   ) {
     return this.productService.updateProduct(id, updateProd);
   }

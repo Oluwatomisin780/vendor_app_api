@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 enum UserType{
@@ -14,7 +14,7 @@ enum UserType{
   BUYER
 }
 model User {
-  id       Int           @id @default(autoincrement())
+  id       String          @id    @db.ObjectId  @default(auto()) @map("_id")
   email    String        @unique
   userName String        @unique
   password String 
@@ -24,23 +24,25 @@ model User {
 }
 
 model Product {
-  id          Int           @id @default(autoincrement())
+  id          String          @id @default(auto())   @db.ObjectId  @map("_id") 
   price       Int
   description String
   name        String
   quantity    Int
-  vendor_id   Int
+  vendor_id   String      @db.ObjectId         
   vendor      User          @relation(fields: [vendor_id], references: [id])
-  transaction Transaction[]
+  tansactionIds String[]  @db.ObjectId
+  transaction Transaction[]   @relation(fields: [tansactionIds],references: [id])
 }
 
 model Transaction {
-  id        Int       @id @default(autoincrement())
-  product   Product[]
+  id        String    @id @default(auto())  @db.ObjectId  @map("_id")
+  productIds String []  @db.ObjectId
+  product   Product[]   @relation(fields: [productIds], references: [id])
   quantity  Int
   unitprice Int 
   totalAmount Int //formula=  quatity *price
-  buyer_id  Int
+  buyer_id   String    @db.ObjectId
   buyer     User      @relation("buyer", fields: [buyer_id], references: [id])
 }
 

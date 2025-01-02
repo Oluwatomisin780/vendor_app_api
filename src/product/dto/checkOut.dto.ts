@@ -17,17 +17,21 @@ export class checkoutDto {
 }
 
 export class Product implements Prisma.ProductUncheckedCreateInput {
-  @IsNumber()
-  vendor_id: number;
+  @IsString()
+  vendor_id: string;
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   name: string;
+  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   description: string;
+  @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
   price: number;
+  @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
   quantity: number;

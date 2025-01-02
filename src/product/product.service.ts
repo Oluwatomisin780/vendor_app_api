@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateProductDto, UpdateProductDto } from './dto/createProduct.dto';
 import { checkoutDto } from './dto/checkOut.dto';
+import { user } from '../types/user.type';
+
 @Injectable()
 export class ProductService {
   constructor(private prismaService: PrismaService) {}
@@ -12,7 +14,7 @@ export class ProductService {
   //create product
   async creataProduct(
     { price, name, description, quantity }: CreateProductDto,
-    userId: number,
+    userId: string,
   ) {
     const product = await this.prismaService.product.create({
       data: {
@@ -26,7 +28,7 @@ export class ProductService {
     return product;
   }
   //getsingleproduct
-  async getSingleProduct(id: number) {
+  async getSingleProduct(id: string) {
     const product = await this.prismaService.product.findUnique({
       where: {
         id,
@@ -35,7 +37,7 @@ export class ProductService {
     return product;
   }
   //update a PRODUCT
-  async updateProduct(id: number, updateProductDto: UpdateProductDto) {
+  async updateProduct(id: string, updateProductDto: UpdateProductDto) {
     this.prismaService.product.update({
       where: {
         id,
@@ -48,7 +50,7 @@ export class ProductService {
   //DELETE Product
 
   //checkout product
-  async checkout(checkoutDto: checkoutDto, userId: number) {
+  async checkout(checkoutDto: checkoutDto, userId: string) {
     checkoutDto.totalAmount = checkoutDto.unitprice * checkoutDto.quantity;
 
     let transaction = await this.prismaService.transaction.create({

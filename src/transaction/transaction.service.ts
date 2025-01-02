@@ -10,7 +10,7 @@ export class TransactionService {
   }
   //getAuserTrancsaction
 
-  async getUserTransaction(userId: number) {
+  async getUserTransaction(userId: string) {
     return this.prismaService.transaction.findMany({
       where: {
         buyer_id: userId,
@@ -18,7 +18,7 @@ export class TransactionService {
     });
   }
   //getAllProductWithVendorId
-  async getProductsWithVendorId(vendorId: number) {
+  async getProductsWithVendorId(vendorId: string) {
     const transaction = await this.prismaService.transaction.findMany({
       where: {
         product: {
